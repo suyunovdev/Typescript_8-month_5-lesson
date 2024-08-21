@@ -151,13 +151,9 @@
   "users": [
     {
       "id": "01234562",
-      "firstName": "Michael",
-      "lastName": "Johnson",
-      "email": "michaeljohnson2@gmail.com",
-      "username": "michaeljohnson2",
-      "password": "michael1234",
-      "phone": "+998901234562",
-      "name": "ewe"
+      "name": "aswdwsa",
+      "email": "wefws",
+      "avatar": ""
     },
     {
       "id": "01234563",
@@ -188,21 +184,21 @@
     },
     {
       "id": "01234566",
-      "firstName": "James",
-      "lastName": "Garcia",
-      "email": "jamesgarcia6@gmail.com",
-      "username": "jamesgarcia6",
-      "password": "james1234",
-      "phone": "+998901234566"
+      "firstName": "",
+      "lastName": "",
+      "email": "ilyossuyunov@gmail.com",
+      "phone": "",
+      "password": "password",
+      "avatar": ""
     },
     {
       "id": "01234567",
-      "firstName": "Ava",
-      "lastName": "Miller",
-      "email": "avamiller7@gmail.com",
-      "username": "avamiller7",
-      "password": "ava1234",
-      "phone": "+998901234567"
+      "firstName": "",
+      "lastName": "",
+      "email": "ilyossuyunov@gmail.com",
+      "phone": "",
+      "password": "",
+      "avatar": ""
     },
     {
       "id": "01234568",
@@ -230,12 +226,6 @@
       "username": "liamhernandez10",
       "password": "liam1234",
       "phone": "+9989012345610"
-    },
-    {
-      "id": 0,
-      "name": "wef",
-      "email": "ewf",
-      "avatar": ""
     }
   ]
 }

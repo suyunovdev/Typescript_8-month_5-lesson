@@ -17,8 +17,10 @@ interface User {
 
 const Users: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [newUser, setNewUser] = useState<Omit<User, "id">>({
     firstName: "",
     lastName: "",
@@ -35,6 +37,7 @@ const Users: React.FC = () => {
       try {
         const response = await axios.get<User[]>("http://localhost:3000/users");
         setUsers(response.data);
+        setFilteredUsers(response.data);
         toast.success("Users loaded successfully!");
       } catch (err: unknown) {
         setError("Failed to fetch users");
@@ -47,6 +50,15 @@ const Users: React.FC = () => {
 
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    const filtered = users.filter(user =>
+      `${user.firstName} ${user.lastName} ${user.email} ${user.username} ${user.phone}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  }, [searchTerm, users]);
 
   const handleCreate = async () => {
     try {
@@ -151,6 +163,12 @@ const Users: React.FC = () => {
   return (
     <div className="p-4">
       <ToastContainer />
+      <Input
+        placeholder="Search by name, email, username or phone..."
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+        className="mb-4"
+      />
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <Button
@@ -164,7 +182,7 @@ const Users: React.FC = () => {
         <div className="max-h-[400px] overflow-y-auto">
           <Table<User>
             columns={columns}
-            dataSource={users}
+            dataSource={filteredUsers}
             rowKey="id"
             loading={loading}
           />

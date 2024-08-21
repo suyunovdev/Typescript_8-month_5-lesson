@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useProductStore } from "../../app/productStore";
 
 interface Product {
@@ -19,12 +19,58 @@ const Products: React.FC = () => {
     })
   );
 
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(Infinity);
+
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
+  useEffect(() => {
+    let filtered = products;
+
+    if (searchTerm) {
+      filtered = filtered.filter(product =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (minPrice > 0 || maxPrice < Infinity) {
+      filtered = filtered.filter(
+        product => product.price >= minPrice && product.price <= maxPrice
+      );
+    }
+
+    setFilteredProducts(filtered);
+  }, [products, searchTerm, minPrice, maxPrice]);
+
   return (
     <div className="p-6">
+      <div className="flex flex-col md:flex-row mb-6 gap-4">
+        <input
+          type="text"
+          placeholder="Search by title..."
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md"
+        />
+        <input
+          type="number"
+          placeholder="Min Price"
+          value={minPrice === 0 ? "" : minPrice}
+          onChange={e => setMinPrice(Number(e.target.value))}
+          className="p-2 border border-gray-300 rounded-md"
+        />
+        <input
+          type="number"
+          placeholder="Max Price"
+          value={maxPrice === Infinity ? "" : maxPrice}
+          onChange={e => setMaxPrice(Number(e.target.value))}
+          className="p-2 border border-gray-300 rounded-md"
+        />
+      </div>
       {loading && (
         <div className="flex justify-center items-center">
           <div className="animate-spin border-4 border-t-4 border-blue-500 rounded-full w-8 h-8"></div>
@@ -35,9 +81,9 @@ const Products: React.FC = () => {
           {error.message || error}
         </p>
       )}
-      {products.length > 0 ? (
+      {filteredProducts.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-auto">
-          {products.map((product: Product) => (
+          {filteredProducts.map((product: Product) => (
             <div
               key={product.id}
               className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col">
